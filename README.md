@@ -1,15 +1,17 @@
 # Transcript Dock for PHP
 
 A synchronous API client for PHP 8.1 or newer. Requires the PHP cURL and JSON
-extensions, with no third party runtime packages. Version 0.1.0.
+extensions, with no third party runtime packages. Version 0.1.0 is available on
+[Packagist](https://packagist.org/packages/transcriptdock/transcriptdock).
 
-Use Composer's path repository feature during local development, or load the
-three source files directly:
+Install with Composer:
+
+```sh
+composer require transcriptdock/transcriptdock:0.1.0
+```
 
 ```php
-require 'src/ApiError.php';
-require 'src/JobTimeoutError.php';
-require 'src/Client.php';
+require 'vendor/autoload.php';
 
 $client = new TranscriptDock\Client(getenv('TRANSCRIPTDOCK_API_KEY'));
 // Generate once per intended operation and save with the returned job ID.
@@ -24,9 +26,8 @@ if ($job['status'] === 'succeeded') {
 }
 ```
 
-Composer autoloading maps `TranscriptDock\\` to `src/`. Install into a local
-application through a Composer `path` repository pointing to this directory,
-then require `transcriptdock/transcriptdock` with the local version constraint.
+Composer autoloading maps `TranscriptDock\\` to `src/`. During local
+development, a Composer `path` repository can point to this directory.
 
 Creating a job can spend credits. The example requests captions only with a
 one credit ceiling and does not enable AI fallback. Save the key and reuse the
