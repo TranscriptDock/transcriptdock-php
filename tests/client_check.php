@@ -37,6 +37,9 @@ foreach (['/v1/batches', '/v1/video-discoveries', '/v1/language-discoveries'] as
     check($client->request('POST', $path, ['fixture' => true], idempotencyKey: 'fixture-generic-01')['request']['method'] === 'POST', 'generic submission failed');
 }
 check($client->request('DELETE', '/v1/transcripts/fixture')['request']['method'] === 'DELETE', 'delete dispatch failed');
+check($client->request('DELETE', '/v1/no-content') === [], 'no content success not empty');
+check($client->request('DELETE', '/v1/no-content', text: true) === '', 'no content text not empty');
+check(raises(ApiError::class, fn() => $client->request('GET', '/v1/empty-ok'))->errorCode === 'INVALID_RESPONSE', 'empty 200 accepted');
 foreach (['http://example.com', 'https://user:pass@example.com', 'https://example.com/path', 'https://example.com?x=1'] as $url) raises(InvalidArgumentException::class, fn() => new Client('fixture-key', $url));
 raises(InvalidArgumentException::class, fn() => new Client("bad\nkey"));
 raises(InvalidArgumentException::class, fn() => $client->createJob([], "bad\nreplay"));

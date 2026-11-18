@@ -41,7 +41,7 @@ final class Client
         }
         $seconds = $timeout ?? $this->timeout;
         self::positive($seconds);
-        $headers = ['Authorization: Bearer ' . $this->apiKey, 'Accept: application/json', 'User-Agent: transcriptdock-php/0.1.0'];
+        $headers = ['Authorization: Bearer ' . $this->apiKey, 'Accept: application/json', 'User-Agent: transcriptdock-php/0.1.1'];
         if ($idempotencyKey !== null) $headers[] = 'Idempotency-Key: ' . $idempotencyKey;
         $url = $this->baseUrl . $path;
         $query = array_filter($query, fn($v) => $v !== null);
@@ -69,6 +69,8 @@ final class Client
                 is_string($envelope['request_id'] ?? null) ? $this->redact($envelope['request_id']) : null,
                 is_int($error['retry_after_seconds'] ?? null) ? $error['retry_after_seconds'] : null);
         }
+        // No Content: a success without a body, for example deleting a webhook endpoint.
+        if ($status === 204) return $text ? '' : [];
         if ($text) return $raw;
         try {
             $decoded = json_decode($raw, false, 512, JSON_THROW_ON_ERROR);

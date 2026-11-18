@@ -39,6 +39,8 @@ Core methods: `capabilities`, `createJob`, `getJob`, `getTranscript`,
 `request($method, $path, $body, $query, $idempotencyKey)` for the complete public
 API, including batches, discovery, upload slots, usage and webhook endpoints.
 Bodies use the [API contract's exact fields](https://www.transcriptdock.com/docs/openapi.yaml).
+A success with no body (204 No Content, such as deleting a webhook endpoint)
+returns an empty array, or an empty string in text mode.
 
 Responses are associative arrays preserving all API fields and timing units.
 Exports are raw JSON, TXT, SRT or VTT strings. Inspect status before using a
